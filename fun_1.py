@@ -1,25 +1,45 @@
-from random import randint
+import time
 
-print("start")
+from selenium import webdriver
+from selenium.webdriver import Keys
 
-VAR = 123
-CONST_TEMP = 100
-data = []
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 
-def print_random (value: int, additional_var=12, var=VAR) -> object:
-    """
-    This function generate some values
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-    """
-    temp = var * additional_var
-    data_string = f'new value {var + randint(0, 20) + temp}'
-    data.append(data_string)
-    for ni in range(10):
-        print(f"iteration (ni)")
-        for i in range(10):
-            print(f"second iteration {i} {ni}")
-            if additional_var == 1:
-                return
-    return f'initial value {var}, {data_string} {additional_var=}'
+driver.implicitly_wait(300)
 
-v = print_random
+element_path = '//*[@id="W0wltc"]/div'
+driver.get("https://google.com")
+
+element = driver.find_element(By.XPATH, element_path)
+
+text_eleent = element.text
+
+element.click()
+
+search_bar = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
+
+search_bar.send_keys("Wikipedia")
+
+search_bar.send_keys(Keys.RETURN)
+
+wiki_link = '//*[@id="rso"]/div[1]/div/div/div/div/div/div/div[1]/a/h3'
+
+wiki_header_class = 'central-textlogo-wrapper'
+
+
+driver.find_element(By.XPATH, wiki_link).click()
+
+expected_element = driver.find_element(By.CLASS_NAME, wiki_header_class)
+
+print(expected_element.text)
+
+
+print(expected_element.find_element(By.XPATH, '//*[@id="www-wikipedia-org"]/div[1]/h1/strong').get_attribute("data-jsl10n"))
+print(driver.find_element(By.XPATH, '//*[@id="www-wikipedia-org"]/div[1]/h1/strong').get_attribute("data-jsl10n"))
+
+
+driver.quit()
