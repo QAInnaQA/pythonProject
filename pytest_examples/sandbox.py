@@ -1,12 +1,21 @@
-import requests
+from pathlib import Path
 
-url = "https://ithillel.ua/n/"
+file_name = "example.txt"
 
-response = requests.get(url)
+current_location = Path(__file__).parent
 
-print(response.status_code)
+next_location = current_location.joinpath("resources").joinpath(
+    "text_documents").joinpath("new_folder").mkdir(parents=True, exist_ok=True)
+# folder_path = Path("resources").join("text_documents")
 
-print(response.elapsed.total_seconds())
+print(current_location)
+print(next_location)
 
-with open("index.html", "w+") as f:
-    f.write(response.text)
+full_filename = Path.cwd().joinpath("resources").joinpath(
+    "text_documents").joinpath(file_name)
+
+with open(full_filename, "w+", encoding="utf-8") as file:
+    file.write("our data")
+
+with open(full_filename, "r", encoding="utf-8") as file:
+    print(file.read())

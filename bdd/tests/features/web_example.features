@@ -1,0 +1,6 @@
+Feature: First test
+
+ Scenario: Login on page
+  Given User 'Bill'
+  When Add additional user 'Bill'
+  Then Compare Users names
